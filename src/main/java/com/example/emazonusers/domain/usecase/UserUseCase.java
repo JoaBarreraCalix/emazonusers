@@ -39,7 +39,7 @@ public class UserUseCase implements IUserServicePort {
         if (user.getEmail() == null || !user.getEmail().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        if (user.getPhoneNumber() == null) {
+        if (user.getPhoneNumber() == null || !user.getPhoneNumber().matches("\\\\+?[0-9]{10,13}")) {
             throw new IllegalArgumentException("Phone number must not be null");
         }
         if (user.getDocumentId() == null) {

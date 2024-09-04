@@ -9,13 +9,13 @@ public class User {
     private String firstName;
     private String lastName;
     private Long documentId;
-    private Long phoneNumber;
+    private String phoneNumber;
     private LocalDate birthDate;
     private String email;
     private String password;
     private Role role;
 
-    public User(Long id, String firstName, String lastName, Long documentId, Long phoneNumber, LocalDate birthDate, String email, String password, Role role) {
+    public User(Long id, String firstName, String lastName, Long documentId, String phoneNumber, LocalDate birthDate, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,11 +62,11 @@ public class User {
         this.documentId = documentId;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
