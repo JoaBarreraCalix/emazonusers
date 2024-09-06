@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -38,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String email = null;
         String jwt = null;
-        String role = null; // Agregar esto para el rol
+        String role = null; // Extraer rol del token
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
@@ -67,9 +69,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
+                // Crear una lista de autoridades basada en el rol extraído
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role); // Prefijo "ROLE_"
                 UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singletonList(authority));
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // Establecer la autenticación en el contexto de seguridad
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

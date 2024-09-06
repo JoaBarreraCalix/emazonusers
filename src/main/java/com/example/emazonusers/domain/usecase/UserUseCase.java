@@ -5,6 +5,8 @@ import com.example.emazonusers.domain.api.IUserServicePort;
 import com.example.emazonusers.domain.model.User;
 import com.example.emazonusers.domain.spi.IUserPersistencePort;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -52,6 +54,15 @@ public class UserUseCase implements IUserServicePort {
         if (user.getBirthDate() == null) {
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
         }
+        if (!isAdult(user.getBirthDate())) {
+            throw new IllegalArgumentException("El usuario debe ser mayor de edad (18 años o más)");
+        }
+    }
+
+    private boolean isAdult(LocalDate birthDate) {
+        LocalDate currentDate = LocalDate.now();
+        int age = Period.between(birthDate, currentDate).getYears();
+        return age >= 18;
     }
 
     private boolean isValidEmail(String email) {
