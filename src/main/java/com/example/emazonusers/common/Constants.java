@@ -1,18 +1,16 @@
 package com.example.emazonusers.common;
 
 public class Constants {
-    public static final String USER_NAME_NOT_EMPTY = "First name is required, cannot be empty";
-    public static final String USER_LAST_NOT_EMPTY = "Last name is required, cannot be empty";
-    public static final String USER_DOC_NOT_EMPTY = "Document ID is required, cannot be null";
-    public static final String USER_PHONE_NUMBER_REGEX = "^\\+57[0-9]{10}$";
-    public static final String USER_PHONE_NOT_VALID = "Phone number is must be valid, with up to 13 digits, including '+' ";
-    public static final String USER_DATE_NOT_EMPTY = "Birth date is required, cannot be null";
-    public static final String USER_EMAIL_NOT_VALID = "User email must be valid";
-    public static final String USER_PASS_NOT_EMPTY = "User password required, cannot be empty";
-    public static final int USER_MIN_PASS_SIZE = 8;
-    public static final String USER_PASS_NOT_VALID = "User password is not valid, must be at least 8 characters long";
-    //MESSAGES
-        //from jakarta
-        //from openapi
-    //EXCEPTIONS
+    public static final String USER_NOT_NULL_FIRST_NAME = "El nombre no puede ser nulo";
+    public static final String USER_NOT_NULL_LAST_NAME = "El apellido no puede ser nulo";
+    public static final String USER_NOT_NULL_DOCUMENT_ID = "El documento de identidad no puede ser nulo";
+    public static final String USER_NOT_NULL_PHONE_NUMBER = "El número de teléfono no puede ser nulo";
+    public static final String USER_INVALID_PHONE_NUMBER = "El número de teléfono debe empezar con +57 y tener 10 dígitos";
+    public static final String USER_NOT_NULL_BIRTHDATE = "La fecha de nacimiento no puede ser nula";
+    public static final String USER_NOT_NULL_EMAIL = "El correo no puede ser nulo";
+    public static final String USER_INVALID_EMAIL = "El correo es inválido";
+    public static final String USER_NOT_NULL_PASSWORD = "La contraseña no puede ser nula";
+    public static final String USER_MIN_PASSWORD_LENGTH = "La contraseña debe tener al menos 8 caracteres";
+    public static final String USER_NOT_NULL_ROLE_ID = "El rol no puede ser nulo";
+
 }

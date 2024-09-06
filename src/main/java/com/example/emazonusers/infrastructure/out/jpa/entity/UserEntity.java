@@ -1,11 +1,19 @@
-//domain.model.User
-package com.example.emazonusers.domain.model;
+package com.example.emazonusers.infrastructure.out.jpa.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "users")
+public class UserEntity {
 
-public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
     private String lastName;
     private Long documentId;
@@ -13,20 +21,12 @@ public class User {
     private LocalDate birthDate;
     private String email;
     private String password;
-    private Long roleId;
 
-    public User(Long id, String firstName, String lastName, Long documentId, String phoneNumber, LocalDate birthDate, String email, String password, Long roleId) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.documentId = documentId;
-        this.phoneNumber = phoneNumber;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.password = password;
-        this.roleId = roleId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private RoleEntity role;
 
+    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -92,11 +92,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public RoleEntity getRole() {
+        return role;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 }
