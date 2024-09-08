@@ -31,7 +31,7 @@ public class UserRequest {
 
     @Schema(description = "Phone number of the user", example = "+571234567890")
     @NotEmpty(message = Constants.USER_NOT_NULL_PHONE_NUMBER)
-    @Pattern(regexp = "^\\+57\\d{10}$", message = Constants.USER_INVALID_PHONE_NUMBER)
+    @Pattern(regexp = Constants.USER_NUMBER_REGEX, message = Constants.USER_INVALID_PHONE_NUMBER)
     private String phoneNumber;
 
     @Schema(description = "Birthdate of the user", example = "1990-01-01")

@@ -25,11 +25,6 @@ public class Constants {
     public static final String TOKEN_IS_INVALID = "Token is invalid";
     public static final String  TOKEN_GENERAL_ERROR = "There is an error with the token";
     public static final String LOGIN_AUTH_HEADER_START = "Bearer ";
-    public static final String USER_DB_ROLE_ID = "role.id";
-    public static final String USER_OBJ_ROLE_ID = "roleId";
-    public static final String USER_DB_ID = "id";
-    public static final String USER_DB_NAME = "users";
-    public static final String ROL_DB_NAME = "rol";
     public static final String LOGIN_ROLE_NOT_FOUND = "Role not found";
     public static final String AUX_BODEGA_RESTRAINT = "ADMIN";
     public static final String USER_DUP_EMAIL = "El correo ya está en uso";
