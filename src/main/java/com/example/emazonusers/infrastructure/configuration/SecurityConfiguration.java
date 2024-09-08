@@ -1,5 +1,6 @@
 package com.example.emazonusers.infrastructure.configuration;
 
+import com.example.emazonusers.common.Constants;
 import com.example.emazonusers.infrastructure.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +27,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
-                        // Solo permitir acceso al endpoint de creación de aux_bodega a los usuarios con rol de ADMIN
-                        .requestMatchers("/api/users/aux_bodega").hasRole("ADMIN")
+                        .requestMatchers("/api/users/aux_bodega").hasRole(Constants.AUX_BODEGA_RESTRAINT)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -1,5 +1,6 @@
 package com.example.emazonusers.infrastructure.in.rest;
 
+import com.example.emazonusers.common.Constants;
 import com.example.emazonusers.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,19 +20,16 @@ public class LoginRestController {
 
     @PostMapping
     public String login(@RequestParam String email, @RequestParam String password) {
-        // Autenticar al usuario
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        // Cargar los detalles del usuario
+
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-        // Extraer el rol del usuario
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Role not found"))
-                .getAuthority().replace("ROLE_", ""); // Eliminar el prefijo "ROLE_"
+                .orElseThrow(() -> new RuntimeException(Constants.LOGIN_ROLE_NOT_FOUND))
+                .getAuthority();
 
-        // Generar el token con el email y el rol
         return jwtUtil.generateToken(userDetails.getUsername(), role);
     }
 }

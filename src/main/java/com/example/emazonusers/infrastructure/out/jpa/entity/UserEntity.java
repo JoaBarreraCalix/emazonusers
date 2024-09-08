@@ -1,5 +1,6 @@
 package com.example.emazonusers.infrastructure.out.jpa.entity;
 
+import com.example.emazonusers.common.Constants;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users")
+@Table(name = Constants.USER_DB_NAME)
 public class UserEntity {
 
     @Id
@@ -23,7 +24,7 @@ public class UserEntity {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JoinColumn(name = Constants.USER_DB_ROLE_ID, referencedColumnName = Constants.USER_DB_ID)
     private RoleEntity role;
 
     // Getters y Setters

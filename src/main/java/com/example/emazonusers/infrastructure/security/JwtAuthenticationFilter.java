@@ -1,5 +1,6 @@
 package com.example.emazonusers.infrastructure.security;
 
+import com.example.emazonusers.common.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -35,47 +36,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // Obtener el token JWT del encabezado Authorization
-        final String authorizationHeader = request.getHeader("Authorization");
+        final String authorizationHeader = request.getHeader(Constants.LOGIN_AUTH_HEADER);
 
         String email = null;
         String jwt = null;
-        String role = null; // Extraer rol del token
+        String role = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(Constants.LOGIN_AUTH_HEADER_START)) {
             jwt = authorizationHeader.substring(7);
 
             try {
                 Claims claims = jwtUtil.extractAllClaims(jwt);
                 email = claims.getSubject();
-                role = (String) claims.get("role"); // Extraer el rol del token
+                role = (String) claims.get(Constants.TOKEN_CLAIM_ROLE);
             } catch (ExpiredJwtException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token expirado");
+                response.getWriter().write(Constants.TOKEN_IS_EXPIRED);
                 return;
             } catch (MalformedJwtException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token inválido");
+                response.getWriter().write(Constants.TOKEN_IS_INVALID);
                 return;
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Error en el token");
+                response.getWriter().write(Constants.TOKEN_GENERAL_ERROR);
                 return;
             }
         }
 
-        // Validar y autenticar el usuario con el rol extraído
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
-                // Crear una lista de autoridades basada en el rol extraído
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role); // Prefijo "ROLE_"
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singletonList(authority));
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // Establecer la autenticación en el contexto de seguridad
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

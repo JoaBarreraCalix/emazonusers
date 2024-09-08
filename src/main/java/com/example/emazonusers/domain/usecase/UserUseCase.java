@@ -1,9 +1,11 @@
 //domain.usecase.UserUseCase
 package com.example.emazonusers.domain.usecase;
 
+import com.example.emazonusers.common.Constants;
 import com.example.emazonusers.domain.api.IUserServicePort;
 import com.example.emazonusers.domain.model.User;
 import com.example.emazonusers.domain.spi.IUserPersistencePort;
+import org.apache.tomcat.util.bcel.Const;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -24,12 +26,12 @@ public class UserUseCase implements IUserServicePort {
 
         Optional<User> existingUserByEmail = userPersistencePort.findUserByEmail(user.getEmail());
         if (existingUserByEmail.isPresent()) {
-            throw new IllegalArgumentException("El correo ya está en uso");
+            throw new IllegalArgumentException(Constants.USER_DUP_EMAIL);
         }
 
         Optional<User> existingUserByDocument = userPersistencePort.findUserByDocumentId(user.getDocumentId());
         if (existingUserByDocument.isPresent()) {
-            throw new IllegalArgumentException("El documento de identificación ya está en uso");
+            throw new IllegalArgumentException(Constants.USER_DUP_DOCID);
         }
 
         userPersistencePort.registerUser(user);
@@ -37,25 +39,25 @@ public class UserUseCase implements IUserServicePort {
 
     private void validateUser(User user) {
         if (user.getFirstName() == null || user.getFirstName().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_FIRST_NAME);
         }
         if (user.getLastName() == null || user.getLastName().isEmpty()) {
-            throw new IllegalArgumentException("El apellido no puede ser nulo");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_LAST_NAME);
         }
         if (user.getEmail() == null || !isValidEmail(user.getEmail())) {
-            throw new IllegalArgumentException("El correo es inválido o nulo");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_EMAIL);
         }
         if (user.getPhoneNumber() == null || !isValidPhoneNumber(user.getPhoneNumber())) {
-            throw new IllegalArgumentException("El número de teléfono debe empezar con +57 y tener 10 dígitos");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_PHONE_NUMBER);
         }
         if (user.getDocumentId() == null) {
-            throw new IllegalArgumentException("El ID del documento no puede ser nulo");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_DOCUMENT_ID);
         }
         if (user.getBirthDate() == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
+            throw new IllegalArgumentException(Constants.USER_NOT_NULL_BIRTHDATE);
         }
         if (!isAdult(user.getBirthDate())) {
-            throw new IllegalArgumentException("El usuario debe ser mayor de edad (18 años o más)");
+            throw new IllegalArgumentException(Constants.USER_NOT_ADULT);
         }
     }
 
@@ -66,13 +68,13 @@ public class UserUseCase implements IUserServicePort {
     }
 
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        String emailRegex = Constants.USER_EMAIL_REGEX;
         Pattern pat = Pattern.compile(emailRegex);
         return pat.matcher(email).matches();
     }
 
     private boolean isValidPhoneNumber(String phoneNumber) {
-        String phonePattern = "^\\+57\\d{10}$";
+        String phonePattern = Constants.USER_NUMBER_REGEX;
         return phoneNumber.matches(phonePattern);
     }
 }
