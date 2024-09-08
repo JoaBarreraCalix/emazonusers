@@ -22,7 +22,13 @@ public class UserHandler implements IUserHandler {
     @Override
     public void registerUser(UserRequest userRequest) {
         User user = userRequestMapper.toUser(userRequest);
+
+        // Depuración: Imprime la contraseña después de ser mapeada
+        System.out.println("Contraseña en User (después del mapeo): " + user.getPassword());
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println("Contraseña encriptada: " + user.getPassword());
+
         userServicePort.registerUser(user);
     }
 }

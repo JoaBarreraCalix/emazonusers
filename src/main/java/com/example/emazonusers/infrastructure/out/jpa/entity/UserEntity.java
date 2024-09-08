@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = Constants.USER_DB_NAME)
+@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -24,7 +24,7 @@ public class UserEntity {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = Constants.USER_DB_ROLE_ID, referencedColumnName = Constants.USER_DB_ID)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private RoleEntity role;
 
     // Getters y Setters

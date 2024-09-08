@@ -10,9 +10,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserEntityMapper {
 
-    @Mapping(source = Constants.USER_DB_ROLE_ID, target = Constants.USER_OBJ_ROLE_ID)
+    @Mapping(source = "role.id", target = "roleId")
     User toDomain(UserEntity userEntity);
 
-    @Mapping(source = Constants.USER_OBJ_ROLE_ID, target = Constants.USER_DB_ROLE_ID)
+    @Mapping(source = "roleId", target = "role.id")
     UserEntity toEntity(User user);
 }
