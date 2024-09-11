@@ -31,6 +31,11 @@ public class Constants {
     public static final String USER_DUP_DOCID = "El documento de identificación ya está en uso";
     public static final String USER_EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static final String USER_NUMBER_REGEX = "^\\+57\\d{10}$";
+    public static final int LOGIN_MAX_TRIES = 5;
+    public static final String LOGIN_MAX_TRIES_ERROR = "Login has exceed the max number of attemps";
+    public static final int LOGIN_START_TRIES = 0;
+    public static final long LOGIN_LOCKED_TIME = 15;
+    public static final int LOGIN_ATTEMPT_ADDEED = 1;
 
     //DOCUMENTATION
 }

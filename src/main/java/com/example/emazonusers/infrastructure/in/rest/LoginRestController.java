@@ -2,6 +2,7 @@ package com.example.emazonusers.infrastructure.in.rest;
 
 import com.example.emazonusers.common.Constants;
 import com.example.emazonusers.infrastructure.security.JwtUtil;
+import com.example.emazonusers.infrastructure.security.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ public class LoginRestController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Operation(summary = "Login user",
             description = "Authenticates a user by email and password and returns a JWT token",
@@ -34,8 +36,13 @@ public class LoginRestController {
             })
     @PostMapping
     public String login(@RequestParam String email, @RequestParam String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        }catch (Exception e) {
+            userDetailsServiceImpl.onLoginFailure(email);
+            throw e;
+        }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
@@ -44,6 +51,7 @@ public class LoginRestController {
                 .orElseThrow(() -> new RuntimeException(Constants.LOGIN_ROLE_NOT_FOUND))
                 .getAuthority();
 
+        userDetailsServiceImpl.onLoginSuccess(email);
         return jwtUtil.generateToken(userDetails.getUsername(), role);
     }
 }
