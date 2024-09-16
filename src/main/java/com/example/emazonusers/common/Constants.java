@@ -27,6 +27,7 @@ public class Constants {
     public static final String LOGIN_AUTH_HEADER_START = "Bearer ";
     public static final String LOGIN_ROLE_NOT_FOUND = "Role not found";
     public static final String AUX_BODEGA_RESTRAINT = "ADMIN";
+    public static final String CLIENT_RESTRAINT = "ADMIN";
     public static final String USER_DUP_EMAIL = "El correo ya está en uso";
     public static final String USER_DUP_DOCID = "El documento de identificación ya está en uso";
     public static final String USER_EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -36,6 +37,8 @@ public class Constants {
     public static final int LOGIN_START_TRIES = 0;
     public static final long LOGIN_LOCKED_TIME = 15;
     public static final int LOGIN_ATTEMPT_ADDEED = 1;
+    public static final Long ROLE_CLIENT_ID = 3L;
+    public static final Long ROLE_BODEGA_ID = 2L;
 
     //DOCUMENTATION
 }

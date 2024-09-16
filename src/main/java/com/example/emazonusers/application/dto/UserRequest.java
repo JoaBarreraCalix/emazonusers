@@ -48,7 +48,5 @@ public class UserRequest {
     @Size(min = 8, message = Constants.USER_MIN_PASSWORD_LENGTH)
     private String password;
 
-    @Schema(description = "Role ID of the user", example = "2")
-    @NotNull(message = Constants.USER_NOT_NULL_ROLE_ID)
     private Long roleId;
 }

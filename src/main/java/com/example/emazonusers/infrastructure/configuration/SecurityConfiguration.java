@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/api/users/aux_bodega").hasRole(Constants.AUX_BODEGA_RESTRAINT)
+                        .requestMatchers("/api/users/client").hasRole(Constants.CLIENT_RESTRAINT)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
